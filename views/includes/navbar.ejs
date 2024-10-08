@@ -1,0 +1,34 @@
+<nav
+  class="navbar navbar-expand-md navbar-dark bg-dark border-bottom sticky-top"
+>
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/home">Smart <span>Pantry</span></a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNavAltMarkup"
+      aria-controls="navbarNavAltMarkup"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div
+      class="collapse navbar-collapse justify-content-end"
+      id="navbarNavAltMarkup"
+    >
+      <div class="navbar-nav">
+        <a class="nav-link" href="/home">Home</a>
+        <a class="nav-link" href="/home">Features</a>
+        <a class="nav-link" href="/home">Pricing</a>
+        <% if(!currUser) { %>
+        <a class="nav-link" href="/signup"><b>Sign Up</b></a>
+        <a class="nav-link" href="/login"><b>Login</b></a>
+        <% } %> <% if(currUser) { %>
+        <a class="nav-link" href="/logout"><b>Log Out</b></a>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</nav>

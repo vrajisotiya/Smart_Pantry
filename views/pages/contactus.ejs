@@ -1,0 +1,61 @@
+<% layout("/layouts/boilerplate") %>
+<section class="contact-us py-5">
+  <div class="container">
+    <h2 class="text-center text-white mb-4">Contact Us</h2>
+    <div class="row">
+      <div class="col-md-6">
+        <form  method="POST" id="form">
+          <input type="hidden" name="access_key" value= "<%= process.env.CONTACT_US_KEY %>"/>
+          <div class="mb-3">
+            <label for="name" class="text-light">Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              name="name"
+              placeholder="Enter your name"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="email" class="text-light">Email</label>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              name="email"
+              placeholder="Enter your email"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="message" class="text-light">Message</label>
+            <textarea
+              class="form-control"
+              id="message"
+              rows="5"
+              name="message"
+              placeholder="Write your message"
+              required
+            ></textarea>
+          </div>
+          <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+          <div class="h-captcha" data-captcha="true" ></div>
+          <button type="submit" class="btn btn-warning btn-lg">
+            Submit Form
+          </button>
+          <div id="result"></div>
+        </form>
+      </div>
+      <div class="col-md-6 get">
+        <h4>Get in Touch</h4>
+        <p><i class="fas fa-map-marker-alt"></i> V.V.P. Engineering College</p>
+        <p><i class="fas fa-phone"></i>+91 1111111111</p>
+        <p>
+          <i class="fas fa-envelope"></i
+          >smartpantry.yourgrocerypartner@gmail.com
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
