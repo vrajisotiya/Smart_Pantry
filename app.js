@@ -67,11 +67,10 @@ passport.use(
       });
       if (!user) {
         const newUser = await User.create({
+          username: profile.displayName,
           googleId: profile.id,
-          name: profile.displayName,
           photo: profile.photos[0].value,
           email: profile.emails[0].value,
-          loginMethod: "google",
         });
         await newUser.save();
         return done(null, newUser);
