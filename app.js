@@ -1,6 +1,5 @@
-if (process.env.NODE_ENV != "production") {
-  require("dotenv").config();
-}
+require("dotenv").config();
+
 
 const express = require("express");
 const app = express();
@@ -16,6 +15,7 @@ const flash = require("connect-flash");
 const ExpressError = require("./utils/ExpressError.js");
 const { isLoggedIn, saveRedirectUrl } = require("./middleware.js");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const axios = require("axios");
 
 const MONGO_URL = "mongodb://127.0.0.1:27017/smartpantry";
 
@@ -135,17 +135,26 @@ app.get("/signup", (req, res) => {
 app.post(
   "/signup",
   wrapAsync(async (req, res) => {
+    const recaptchaResponse = req.body["g-recaptcha-response"];
+    const verificationUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${recaptchaResponse}`;
     try {
+      const response = await axios.post(verificationUrl);
+      const verificationData = response.data;
       let { username, email, password } = req.body;
       const newUser = new User({ email, username });
-      const registeredUser = await User.register(newUser, password);
-      req.login(registeredUser, (err) => {
-        if (err) {
-          return next(err);
-        }
-        req.flash("success", "user was registered");
-        res.redirect("/home");
-      });
+      if (verificationData.success) {
+        const registeredUser = await User.register(newUser, password);
+        req.login(registeredUser, (err) => {
+          if (err) {
+            return next(err);
+          }
+          req.flash("success", "user was registered");
+          res.redirect("/home");
+        });
+      } else {
+        req.flash("error", "CAPTCHA verification failed, please try again.");
+        res.redirect("/signup");
+      }
     } catch (e) {
       req.flash("error", e.message);
       res.redirect("/signup");
@@ -193,6 +202,10 @@ app.get(
     res.redirect("/home");
   }
 );
+
+app.get("/", (req, res) => {
+  res.render("pages/index.ejs");
+});
 
 app.all("*", (req, res, next) => {
   next(new ExpressError(404, "Page Not Found"));

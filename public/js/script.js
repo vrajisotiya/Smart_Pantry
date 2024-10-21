@@ -21,10 +21,10 @@
   });
 })();
 
+
 // contact us
 const form = document.getElementById("form");
 const result = document.getElementById("result");
-
 form.addEventListener("submit", function (e) {
   e.preventDefault();
   const formData = new FormData(form);
@@ -43,9 +43,11 @@ form.addEventListener("submit", function (e) {
     .then(async (response) => {
       let json = await response.json();
       if (response.status == 200) {
+        alert(json.message);
         result.innerHTML = json.message;
       } else {
         console.log(response);
+        alert(json.message);
         result.innerHTML = json.message;
       }
     })
